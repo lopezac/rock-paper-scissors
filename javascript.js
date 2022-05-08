@@ -1,4 +1,7 @@
 const legalMoves = ["rock", "paper", "scissors"];
+const maxNumOfRounds = 5;
+let playerWonRounds = 0;
+let computerWonRounds = 0;
 
 function playerSelection() {
     let userInput = prompt("Enter your move: ");
@@ -18,4 +21,15 @@ function checkIfValidPlay(play) {
     return true;
 }
 
-playerSelection();
+function displayGameWinner(winner) {
+    alert(`${winner} won the game!`);
+}
+
+function checkIfPlayerWonRound(pPlay, cPlay) {
+    // pPlay is playerPlay and cPlay is computerPlay
+    if ((pPlay === "paper" && cPlay === "rock") || 
+    (pPlay === "rock" && cPlay === "scissors") ||
+    (pPlay === "scissors" && cPlay === "paper")) {
+        return true;
+    }
+}
