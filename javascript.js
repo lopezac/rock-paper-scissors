@@ -13,6 +13,11 @@ function playerSelection() {
     return userInput;
 }
 
+function computerSelection() {
+    let randomNum = Math.floor(Math.random() * 3);
+    return legalMoves[randomNum];
+}
+
 function checkIfValidPlay(play) {
     if ((play === null) || !(legalMoves.includes(play.toLowerCase()))) {
         return false;
@@ -31,5 +36,29 @@ function checkIfPlayerWonRound(pPlay, cPlay) {
     (pPlay === "rock" && cPlay === "scissors") ||
     (pPlay === "scissors" && cPlay === "paper")) {
         return true;
+    }
+}
+
+function displayComputerWonRoundMsg(pPlay, cPlay) {
+    alert(`The Computer won the round! ${cPlay} beats ${pPlay}!`);
+}
+
+function displayPlayerWonRoundMsg(pPlay, cPlay) {
+    alert(`You won the round! ${pPlay} beats ${cPlay}!`);
+}
+
+function displayTieRoundMsg(pPlay, cPlay) {
+    alert(`The round was tied! ${pPlay} ties with ${pPlay}!`);
+}
+
+function decideRoundResult(pPlay, cPlay) {
+    if (pPlay === cPlay) {
+        displayTieRoundMsg(pPlay, cPlay);
+    } else if (checkIfPlayerWonRound(pPlay, cPlay)) {
+        displayPlayerWonRoundMsg(pPlay, cPlay);
+        playerWonRounds += 1;
+    } else {
+        displayComputerWonRoundMsg(pPlay, cPlay);
+        computerWonRounds += 1;
     }
 }
