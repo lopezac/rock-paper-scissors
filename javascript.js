@@ -3,6 +3,33 @@ const maxNumOfRounds = 5;
 let playerWonRounds = 0;
 let computerWonRounds = 0;
 
+startGame();
+
+function startGame() {
+    while (noOneWonTheGame()) {
+        let playerPlay = playerSelection();
+        let computerPlay = computerSelection();
+        decideRoundResult(playerPlay, computerPlay);
+
+        // Temporal output of game state
+        console.log(`Player ${playerWonRounds} Computer ${computerWonRounds}`);
+    }
+
+    let gameWinner = getGameWinner();
+    displayGameWinner(gameWinner);
+    askIfNewGame();
+}
+
+function askIfNewGame() {
+    let userAnswer = confirm("Do you want to start a new game?");
+
+    if (userAnswer) {
+        playerWonRounds = 0;
+        computerWonRounds = 0;
+        startGame()
+    }
+}
+
 function playerSelection() {
     let userInput = prompt("Enter your move: ");
 
@@ -18,12 +45,26 @@ function computerSelection() {
     return legalMoves[randomNum];
 }
 
+function getGameWinner() {
+    if (playerWonRounds === 5) {
+        return "Player";
+    } else if (computerWonRounds === 5) {
+        return "Computer";
+    }
+
+}
+
 function checkIfValidPlay(play) {
     if ((play === null) || !(legalMoves.includes(play.toLowerCase()))) {
         return false;
     }
-
+    
     return true;
+}
+
+function noOneWonTheGame() {
+    return ((playerWonRounds < maxNumOfRounds) && 
+        (computerWonRounds < maxNumOfRounds))
 }
 
 function displayGameWinner(winner) {
