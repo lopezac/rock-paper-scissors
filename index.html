@@ -3,11 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <title>Rock Paper Scissors</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="styles/styles.css">
+    <link rel="stylesheet" href="styles/normalize.css">
     <script src="javascript.js"></script>
 </head>
 
 <body>
-    
+    <h1 class="title">Rock, Paper or Scissors</h1>
+
+    <div class="buttons">
+        <img src="images/rock.png" class="rock">
+        <img src="images/paper.png" class="paper">
+        <img src="images/scissors.png" class="scissors">
+    </div>
+
+    <div class="scoreboard">
+        <div class="player-content">
+            <img src="images/player-face.png">
+            <p class="player-score">0</p>
+        </div>
+
+        <div class="computer-content">
+            <img src="images/robot-face.png">
+            <p class="computer-score">0</p>
+        </div>
+    </div>
+
+    <div class="log">
+
+    </div>
+
+    <button id="new-game">Start new game</button>
 </body>
 </html>

@@ -3,8 +3,6 @@ const maxNumOfRounds = 5;
 let playerWonRounds = 0;
 let computerWonRounds = 0;
 
-startGame();
-
 function startGame() {
     while (noOneWonTheGame()) {
         let playerPlay = playerSelection();
