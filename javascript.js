@@ -3,42 +3,57 @@ const maxNumOfRounds = 5;
 let playerWonRounds = 0;
 let computerWonRounds = 0;
 
-function startGame() {
-    while (noOneWonTheGame()) {
-        let playerPlay = playerSelection();
-        let computerPlay = computerSelection();
-        decideRoundResult(playerPlay, computerPlay);
+const buttons = document.querySelectorAll(".buttons>img");
+const startGameBtn = document.querySelector("#new-game");
+startGameBtn.addEventListener("click", restartGame)
 
-        // Temporal output of game state
-        console.log(`Player ${playerWonRounds} Computer ${computerWonRounds}`);
-    }
-
-    let gameWinner = getGameWinner();
-    displayGameWinner(gameWinner);
-    askIfNewGame();
+for (btn of buttons) {
+    btn.addEventListener('click', (e) => playGame(e.target.className));
 }
 
-function askIfNewGame() {
-    let userAnswer = confirm("Do you want to start a new game?");
-
-    if (userAnswer) {
-        playerWonRounds = 0;
-        computerWonRounds = 0;
-        startGame()
+function playGame(pPlay) {
+    if (hasSomeoneWonTheGame()) return;
+    playRound(pPlay, computerPlay());
+    console.log(`player ${playerWonRounds} computer ${computerWonRounds}`);
+    if (hasSomeoneWonTheGame()) {
+        showNewGameBtn();
+        showGameWinner(); 
     }
 }
 
-function playerSelection() {
-    let userInput = prompt("Enter your move: ");
-
-    while (!checkIfValidPlay(userInput)) {
-        userInput = prompt("Enter a valid move: ");
+function playRound(pPlay, cPlay) {
+    let roundResult = false;
+    if (pPlay === cPlay) {
+        console.log('tie');
+    } else if (checkIfPlayerWonRound(pPlay, cPlay)) {
+        playerWonRounds += 1;
+        roundResult = "Player";
+    } else {
+        computerWonRounds += 1;
+        roundResult = "Computer";
     }
-
-    return userInput;
+    displayRoundResult(pPlay, cPlay, roundResult);
 }
 
-function computerSelection() {
+function displayRoundResult(pPlay, cPlay, roundResult) {
+    const logDiv = document.querySelector(".log");
+}
+
+function showNewGameBtn() {
+    console.log('new game btn')
+}
+
+function showGameWinner() {
+
+}
+
+function restartGame() {
+    playerWonRounds = 0;
+    computerWonRounds = 0;
+    startGameBtn.style.display = "none";
+}
+
+function computerPlay() {
     let randomNum = Math.floor(Math.random() * 3);
     return legalMoves[randomNum];
 }
@@ -49,24 +64,12 @@ function getGameWinner() {
     } else if (computerWonRounds === 5) {
         return "Computer";
     }
-
+    // return (playerWonRounds === 5) ? "Player" : "Computer";
 }
 
-function checkIfValidPlay(play) {
-    if ((play === null) || !(legalMoves.includes(play.toLowerCase()))) {
-        return false;
-    }
-    
-    return true;
-}
-
-function noOneWonTheGame() {
-    return ((playerWonRounds < maxNumOfRounds) && 
-        (computerWonRounds < maxNumOfRounds))
-}
-
-function displayGameWinner(winner) {
-    alert(`${winner} won the game!`);
+function hasSomeoneWonTheGame() {
+    return ((playerWonRounds >= maxNumOfRounds) ||
+        (computerWonRounds >= maxNumOfRounds))
 }
 
 function checkIfPlayerWonRound(pPlay, cPlay) {
@@ -75,29 +78,5 @@ function checkIfPlayerWonRound(pPlay, cPlay) {
     (pPlay === "rock" && cPlay === "scissors") ||
     (pPlay === "scissors" && cPlay === "paper")) {
         return true;
-    }
-}
-
-function displayComputerWonRoundMsg(pPlay, cPlay) {
-    alert(`The Computer won the round! ${cPlay} beats ${pPlay}!`);
-}
-
-function displayPlayerWonRoundMsg(pPlay, cPlay) {
-    alert(`You won the round! ${pPlay} beats ${cPlay}!`);
-}
-
-function displayTieRoundMsg(pPlay, cPlay) {
-    alert(`The round was tied! ${pPlay} ties with ${pPlay}!`);
-}
-
-function decideRoundResult(pPlay, cPlay) {
-    if (pPlay === cPlay) {
-        displayTieRoundMsg(pPlay, cPlay);
-    } else if (checkIfPlayerWonRound(pPlay, cPlay)) {
-        displayPlayerWonRoundMsg(pPlay, cPlay);
-        playerWonRounds += 1;
-    } else {
-        displayComputerWonRoundMsg(pPlay, cPlay);
-        computerWonRounds += 1;
     }
 }
