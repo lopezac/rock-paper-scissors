@@ -17,7 +17,6 @@ for (btn of buttons) {
 function playGame(pPlay) {
     if (hasSomeoneWonTheGame()) return;
     playRound(pPlay, computerPlay());
-    console.log(`player ${playerWonRounds} computer ${computerWonRounds}`);
     if (hasSomeoneWonTheGame()) {
         showNewGameBtn();
         showGameWinner(); 
