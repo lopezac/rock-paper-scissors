@@ -4,8 +4,11 @@ let playerWonRounds = 0;
 let computerWonRounds = 0;
 
 const buttons = document.querySelectorAll(".buttons>img");
-const startGameBtn = document.querySelector("#new-game");
-startGameBtn.addEventListener("click", restartGame)
+const newGameBtn = document.querySelector("#new-game");
+const playerScore = document.querySelector(".player-score");
+const computerScore = document.querySelector(".computer-score");
+const logDiv = document.querySelector(".log");
+newGameBtn.addEventListener("click", restartGame)
 
 for (btn of buttons) {
     btn.addEventListener('click', (e) => playGame(e.target.className));
@@ -22,35 +25,81 @@ function playGame(pPlay) {
 }
 
 function playRound(pPlay, cPlay) {
-    let roundResult = false;
+    let roundWinner = false;
     if (pPlay === cPlay) {
-        console.log('tie');
     } else if (checkIfPlayerWonRound(pPlay, cPlay)) {
         playerWonRounds += 1;
-        roundResult = "Player";
+        roundWinner = "Player";
     } else {
         computerWonRounds += 1;
-        roundResult = "Computer";
+        roundWinner = "Computer";
     }
-    displayRoundResult(pPlay, cPlay, roundResult);
+    displayRoundResult(pPlay, cPlay, roundWinner);
+    updateScore();
 }
 
-function displayRoundResult(pPlay, cPlay, roundResult) {
-    const logDiv = document.querySelector(".log");
+function updateScore() {
+    playerScore.textContent = playerWonRounds;
+    computerScore.textContent = computerWonRounds;
+}
+
+function displayRoundResult(pPlay, cPlay, roundWinner) {
+    const roundDiv = document.createElement("div");
+    const playerImg = document.createElement("img");
+    const computerImg = document.createElement("img");
+    const roundResult = document.createElement("p");
+
+    playerImg.src = `images/${pPlay}.png`;
+    computerImg.src = `images/${cPlay}.png`;
+    roundDiv.className = "round";
+    
+    if (roundWinner === "Player") {
+        roundResult.textContent = "beats";
+    } else if (roundWinner === "Computer") {
+        roundResult.textContent = "loses";
+    } else {
+        roundResult.textContent = "ties";
+    }
+
+    roundDiv.appendChild(playerImg);
+    roundDiv.appendChild(roundResult);
+    roundDiv.appendChild(computerImg);
+    logDiv.appendChild(roundDiv);
 }
 
 function showNewGameBtn() {
-    console.log('new game btn')
+    newGameBtn.style.display = "flex";
+}
+
+function clearLog() {
+    const rounds = document.querySelectorAll(".round");
+    for (round of rounds) {
+        round.parentNode.removeChild(round);
+    }
+}
+
+function clearScore() {
+    playerScore.textContent = 0;
+    computerScore.textContent = 0;
 }
 
 function showGameWinner() {
+    let gameWinner = getGameWinner();
+    const pDiv = document.createElement("p");
 
+    pDiv.textContent = `${gameWinner} won the game!`;
+    pDiv.className = "round";
+    pDiv.style.fontSize = "48px";
+    pDiv.style.fontWeight = "bold";
+    logDiv.appendChild(pDiv);
 }
 
 function restartGame() {
     playerWonRounds = 0;
     computerWonRounds = 0;
-    startGameBtn.style.display = "none";
+    newGameBtn.style.display = "none";
+    clearLog();
+    clearScore();
 }
 
 function computerPlay() {
